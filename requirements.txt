@@ -1,0 +1,12 @@
+fastapi>=0.95
+uvicorn[standard]>=0.22
+pydantic>=1.10
+SQLAlchemy>=2.0
+databases>=0.5.7
+asyncpg>=0.27.0
+aiosqlite>=0.17.0
+langchain>=0.0.330   # pin to a recent stable version you use
+langchain-community>=0.0.20
+langchain-google-genai>=0.2.0
+faiss-cpu>=1.7.4
+python-dotenv>=1.0.0
