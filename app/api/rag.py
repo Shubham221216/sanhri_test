@@ -45,7 +45,7 @@ prompt = PromptTemplate.from_template(prompt_template_str)
 
 # ✅ Helper: Get mall documents from DB
 async def fetch_store_documents():
-    await database.connect()
+    # await database.connect()
     query = text("""
         SELECT 
             s.shop_name,
@@ -63,7 +63,7 @@ async def fetch_store_documents():
         LIMIT 10
     """)
     rows = await database.fetch_all(query)
-    await database.disconnect()
+
 
     return [
         Document(

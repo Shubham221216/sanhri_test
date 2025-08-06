@@ -1,10 +1,12 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+import os
 from fastapi import FastAPI
 from app.api import rag
 
 from fastapi.middleware.cors import CORSMiddleware
+from app.db import database
 
 app = FastAPI(
     title="SANHRI-X Backend",
@@ -33,6 +35,33 @@ app.add_middleware(
 )
 
 app.include_router(rag.router)
+
+
+# ---- DB lifecycle ----
+@app.on_event("startup")
+async def startup():
+    # connect DB once at startup (creates connection pool)
+    try:
+        await database.connect()
+        print("Database connected")
+    except Exception as e:
+        # log and optionally re-raise to fail the startup
+        print("Failed to connect to database on startup:", e)
+        raise
+
+@app.on_event("shutdown")
+async def shutdown():
+    try:
+        await database.disconnect()
+        print("Database disconnected")
+    except Exception as e:
+        print("Error disconnecting database:", e)
+
+# ---- run locally convenience ----
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
 
 if __name__ == "__main__":
     import uvicorn
