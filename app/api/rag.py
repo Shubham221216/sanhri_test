@@ -12,6 +12,7 @@ from langchain.docstore.document import Document
 from langchain_core.prompts import PromptTemplate
 from datetime import date
 import logging
+import time
 
 router = APIRouter(prefix="/rag", tags=["RAG Assistant"])
 
@@ -63,7 +64,7 @@ async def fetch_store_documents():
         LIMIT 10
     """)
     rows = await database.fetch_all(query)
-
+    # await database.disconnect()
 
     return [
         Document(
@@ -86,7 +87,9 @@ async def health_check():
 # ✅ Main RAG endpoint
 @router.post("/ask", response_model=QueryResponse)
 async def ask_virtual_assistant(query_input: QueryInput):
+    start_time = time.perf_counter()
     query = query_input.query.strip()
+
     if not query:
         raise HTTPException(status_code=400, detail="Query cannot be empty.")
 
@@ -102,6 +105,9 @@ async def ask_virtual_assistant(query_input: QueryInput):
         retriever_chain = create_retrieval_chain(retriever, document_chain)
 
         result = retriever_chain.invoke({"input": query})
+
+        elapsed_time = time.perf_counter() - start_time
+        print(f"Total backend processing time: {elapsed_time:.2f} seconds")
 
         return {
             "answer": result.get("answer") or result.get("output", "Sorry, I couldn't find a response."),
