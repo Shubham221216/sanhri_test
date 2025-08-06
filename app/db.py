@@ -5,7 +5,7 @@ import os
 
 
 # Load from environment or hardcode for now
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:Naruto@123@localhost/sanhri")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:Naruto@123@localhost/robot_db")
 
 # Async database connection (for FastAPI)
 database = Database(DATABASE_URL)
