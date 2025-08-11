@@ -44,7 +44,7 @@ def get_model():
         try:
             # Use stable Gemini model instead of experimental
             _model = ChatGoogleGenerativeAI(
-                model='gemini-1.5-flash',  # Stable model
+                model='gemini-1.5-flash-8b',  # Stable model
                 temperature=0.3,
                 max_tokens=1024,
                 timeout=30,  # 30 second timeout
