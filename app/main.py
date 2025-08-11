@@ -41,6 +41,7 @@ app.include_router(rag.router)
 @app.on_event("startup")
 async def startup():
     # connect DB once at startup (creates connection pool)
+
     try:
         await database.connect()
         print("Database connected")
@@ -56,6 +57,15 @@ async def shutdown():
         print("Database disconnected")
     except Exception as e:
         print("Error disconnecting database:", e)
+
+@app.get("/")
+async def root():
+    return {
+        "message": "🚀 SANHRI-X Backend is running successfully!",
+        "status": "ok",
+        "version": "1.0.0"
+    }
+
 
 # ---- run locally convenience ----
 if __name__ == "__main__":
