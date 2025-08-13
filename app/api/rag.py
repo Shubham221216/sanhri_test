@@ -276,6 +276,9 @@ async def get_vectorstore():
         if not docs:
             logging.warning("No documents fetched from database")
             return None
+        for i in range(len(docs)):
+            docs[i].page_content = re.sub(r"\*", "", docs[i].page_content)  # remove all asterisks
+            docs[i].page_content = re.sub(r"\s+", " ", docs[i].page_content).strip()  # normalize spaces
             
         # Create vector store
         embeddings = get_embeddings()
