@@ -15,6 +15,7 @@ import logging
 import re
 import asyncio
 from typing import Optional
+import os
 
 router = APIRouter(prefix="/rag", tags=["RAG Assistant"])
 
@@ -117,7 +118,7 @@ def get_general_response(query: str, language: str) -> str:
     
     if language == "hi":
         if re.search(r'\b(हैलो|हाय|नमस्ते|नमस्कार)\b', query_lower):
-            return "नमस्ते! मैं SanHri-X हूं, आपका मॉल असिस्टेंट। मैं आपकी दुकानों, समय, दिशा और ऑफ़र्स के बारे में मदद कर सकता हूं।"
+            return "नमस्ते! मैं AI Mall Assistant हूं, आपका मॉल असिस्टेंट। मैं आपकी दुकानों, समय, दिशा और ऑफ़र्स के बारे में मदद कर सकता हूं।"
         elif re.search(r'\b(धन्यवाद|शुक्रिया)\b', query_lower):
             return "आपका स्वागत है! क्या मैं आपकी और कोई मदद कर सकता हूं?"
         elif re.search(r'\b(अलविदा|बाय)\b', query_lower):
@@ -125,11 +126,11 @@ def get_general_response(query: str, language: str) -> str:
         elif re.search(r'\b(कैसे\s+हैं|क्या\s+हाल)\b', query_lower):
             return "मैं बिल्कुल ठीक हूं और आपकी सेवा के लिए तैयार हूं! आप मॉल के बारे में कुछ भी पूछ सकते हैं।"
         elif re.search(r'\b(आप\s+कौन|आपका\s+नाम)\b', query_lower):
-            return "मैं SanHri-X हूं, आपका स्मार्ट मॉल असिस्टेंट। मैं यहां स्टोर की जानकारी, समय और दिशा-निर्देश देने के लिए हूं।"
+            return "मैं AI Mall Assistant हूं, आपका स्मार्ट मॉल असिस्टेंट। मैं यहां स्टोर की जानकारी, समय और दिशा-निर्देश देने के लिए हूं।"
     
     elif language == "mr":
         if re.search(r'\b(हॅलो|हाय|नमस्कार|नमस्ते)\b', query_lower):
-            return "नमस्कार! मी SanHri-X आहे, तुमचा मॉल असिस्टंट. मी तुम्हाला दुकाने, वेळा, दिशा आणि ऑफर्स बद्दल मदत करू शकतो."
+            return "नमस्कार! मी AI Mall Assistant आहे, तुमचा मॉल असिस्टंट. मी तुम्हाला दुकाने, वेळा, दिशा आणि ऑफर्स बद्दल मदत करू शकतो."
         elif re.search(r'\b(धन्यवाद)\b', query_lower):
             return "कृपया! मी तुमची आणखी काही मदत करू शकतो का?"
         elif re.search(r'\b(निरोप|अलविदा)\b', query_lower):
@@ -137,11 +138,11 @@ def get_general_response(query: str, language: str) -> str:
         elif re.search(r'\b(कसे\s+आहात|काय\s+चालू)\b', query_lower):
             return "मी पूर्णपणे तयार आहे आणि तुमची सेवा करण्यासाठी उत्सुक आहे! तुम्ही मॉल संबंधी काहीही विचारू शकता."
         elif re.search(r'\b(तुम्ही\s+कोण|तुमचे\s+नाव)\b', query_lower):
-            return "मी SanHri-X आहे, तुमचा स्मार्ट मॉल असिस्टंट. मी येथे स्टोअरची माहिती, वेळ आणि दिशा-निर्देश देण्यासाठी आहे."
+            return "मी AI Mall Assistant आहे, तुमचा स्मार्ट मॉल असिस्टंट. मी येथे स्टोअरची माहिती, वेळ आणि दिशा-निर्देश देण्यासाठी आहे."
     
     else:  # English
         if re.search(r'\b(hello|hi|hey)\b', query_lower):
-            return "Hello! I'm SanHri-X, your mall assistant. I can help you with store information, timings, directions, and current offers."
+            return "Hello! I'm AI Mall Assistant, your mall assistant. I can help you with store information, timings, directions, and current offers."
         elif re.search(r'\b(thank\s+you|thanks)\b', query_lower):
             return "You're welcome! Is there anything else I can help you with?"
         elif re.search(r'\b(bye|goodbye)\b', query_lower):
@@ -149,21 +150,21 @@ def get_general_response(query: str, language: str) -> str:
         elif re.search(r'\b(how\s+are\s+you|what\'s\s+up)\b', query_lower):
             return "I'm doing great and ready to assist you! Feel free to ask me anything about the mall."
         elif re.search(r'\b(who\s+are\s+you|what\s+is\s+your\s+name)\b', query_lower):
-            return "I'm SanHri-X, your smart mall assistant. I'm here to provide store information, timings, and directions."
+            return "I'm AI Mall Assistant, your smart mall assistant. I'm here to provide store information, timings, and directions."
     
     # Fallback response
     if language == "hi":
-        return "मैं SanHri-X हूं। मैं आपकी मॉल से जुड़ी किसी भी जानकारी में मदद कर सकता हूं।"
+        return "मैं AI Mall Assistant हूं। मैं आपकी मॉल से जुड़ी किसी भी जानकारी में मदद कर सकता हूं।"
     elif language == "mr":
-        return "मी SanHri-X आहे. मी तुम्हाला मॉलशी संबंधित कोणत्याही माहितीत मदत करू शकतो."
+        return "मी AI Mall Assistant आहे. मी तुम्हाला मॉलशी संबंधित कोणत्याही माहितीत मदत करू शकतो."
     else:
-        return "I'm SanHri-X, your mall assistant. I can help you with any mall-related information."
+        return "I'm AI Mall Assistant, your mall assistant. I can help you with any mall-related information."
 
 # --- Language-based prompt generator
 def get_prompt_template(language: str) -> PromptTemplate:
     if language == "hi":
         template = """
-आप SanHri-X हैं — एक बुद्धिमान और मित्रवत वर्चुअल असिस्टेंट, जो ग्राहकों की मॉल से संबंधित पूछताछ जैसे दिशा-निर्देश, स्टोर समय, और चालू ऑफ़र्स में मदद करता है।
+आप AI Mall Assistant हैं — एक बुद्धिमान और मित्रवत वर्चुअल असिस्टेंट, जो ग्राहकों की मॉल से संबंधित पूछताछ जैसे दिशा-निर्देश, स्टोर समय, और चालू ऑफ़र्स में मदद करता है।
 
 नीचे दी गई जानकारी का उपयोग करके उपयोगकर्ता के प्रश्न का उत्तर दें। यदि कोई प्रासंगिक जानकारी नहीं मिलती है, तो विनम्रता से बताएं कि जानकारी उपलब्ध नहीं है।
 
@@ -177,7 +178,7 @@ def get_prompt_template(language: str) -> PromptTemplate:
 """
     elif language == "mr":
         template = """
-तुम्ही SanHri-X आहात — एक हुशार आणि मैत्रीपूर्ण आभासी सहाय्यक, जो मॉलशी संबंधित विचारलेले प्रश्न जसे की दिशा, दुकाने उघडण्याचे वेळापत्रक आणि चालू ऑफर्स यास मदत करतो.
+तुम्ही AI Mall Assistant आहात — एक हुशार आणि मैत्रीपूर्ण आभासी सहाय्यक, जो मॉलशी संबंधित विचारलेले प्रश्न जसे की दिशा, दुकाने उघडण्याचे वेळापत्रक आणि चालू ऑफर्स यास मदत करतो.
 
 खाली दिलेल्या माहितीनुसार वापरकर्त्याच्या प्रश्नाचे उत्तर द्या. जर संबंधित माहिती सापडली नाही, तर नम्रपणे सांगा की माहिती उपलब्ध नाही.
 
@@ -191,7 +192,7 @@ def get_prompt_template(language: str) -> PromptTemplate:
 """
     else:
         template = """
-You are SanHri-X, a friendly and intelligent virtual assistant designed to help customers with mall-related queries like directions, store timings, and current offers.
+You are AI Mall Assistant, a friendly and intelligent virtual assistant designed to help customers with mall-related queries like directions, store timings, and current offers.
 
 Use the information below to answer the user's query. If no relevant data is found, say so politely.
 
