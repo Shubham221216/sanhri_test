@@ -44,9 +44,9 @@ def get_model():
         try:
             # Use stable Gemini model instead of experimental
             _model = ChatGoogleGenerativeAI(
-                model='gemini-1.5-flash-8b',  # Stable model
+                model='gemini-2.0-flash-lite',  # Stable model
                 temperature=0.3,
-                max_tokens=1024,
+                max_tokens=200,
                 timeout=30,  # 30 second timeout
                 max_retries=2  # Reduce retries
             )
@@ -56,7 +56,7 @@ def get_model():
             _model = ChatGoogleGenerativeAI(
                 model='gemini-pro',
                 temperature=0.3,
-                max_tokens=1024,
+                max_tokens=200,
                 timeout=30,
                 max_retries=2
             )
@@ -67,7 +67,7 @@ def get_embeddings():
     global _embeddings
     if _embeddings is None:
         _embeddings = GoogleGenerativeAIEmbeddings(
-            model='models/embedding-001',
+            model="models/text-embedding-004",
             task_type="retrieval_document"
         )
     return _embeddings
